@@ -17,3 +17,6 @@ Para funcionar:
 ```
 
 Se for compilar num windows lembre-se de compilar com um .exe eu acho
+
+
+A informação foi pega da [bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Save_data_structure_in_Generation_III) e a ideia foi [desse repositorio](https://github.com/huderlem/gomons)
