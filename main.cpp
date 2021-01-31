@@ -1,3 +1,5 @@
+#include "GameSaveBlock.h"
+#include "Sections.h"
 #include "Save.h"
 #include <iostream>
 
@@ -11,18 +13,9 @@ int main(int argc, char* argv[])
 
 	Save save(argv[1]);
 
-	char name[8];
-	save.getPlayerName(name);
+	Section* ti = save.SaveBlock->getSection(0);
 
-	std::cout << "Seu nome é: " << name << std::endl;
-	if (!save.getPlayerGender())
-	{
-		std::cout << "Voce é um garoto" << std::endl;
-	} else {
-		std::cout << "Voce é uma garota" << std::endl;
-	}
-	std::cout << "Seu TID é: " << save.getPlayerID() << std::endl;
-	std::cout << "Seu dinheiro é: " << save.getPlayerMoney() << std::endl;
+	std::cout << ti->id << std::endl;
 
 	return 0;
 }
