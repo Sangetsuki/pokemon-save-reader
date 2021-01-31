@@ -10,3 +10,10 @@ g++ main.cpp Save.cpp
 ```
 
 não coloquei makefile ainda
+
+Para funcionar:
+```
+./a.out (caminho para o save, sem os ())
+```
+
+Se for compilar num windows lembre-se de compilar com um .exe eu acho

@@ -8,10 +8,8 @@ public:
 	~Save();
 
 	uint16_t getSaveBlockOffset(); // current block
-	uint16_t getSaveBlockOffset(uint8_t block); // 0 for A, 1 for B
 
 	uint16_t getSection(uint8_t id); // from current block
-	uint16_t getSection(uint8_t id, uint8_t block); // for specific block
 
 	/*uint16_t getChecksum(uint8_t section);
 	uint16_t getChecksum(uint8_t section, uint8_t block);
@@ -22,7 +20,7 @@ public:
 	char* getPlayerName(char* target);
 
 	uint16_t getPlayerGender(); // FALSE/0 for boy, TRUE/1 for female
-	uint16_t setPlayerGender(uint16_t newGender); // FALSE/0 for boy, TRUE/1 for female
+	uint16_t setPlayerGender(uint16_t newGender); // even for male, odd for female
 
 	uint16_t getPlayerID();
 	uint16_t getPlayerSID();

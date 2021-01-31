@@ -23,31 +23,10 @@ uint16_t Save::getSaveBlockOffset()
 	return SaveBlockAIndex > SaveBlockBIndex ? 0x0000 : GameSaveASize;
 };
 
-uint16_t Save::getSaveBlockOffset(uint8_t block)
-{
-	return GameSaveASize * (block % 2);
-};
-
 uint16_t Save::getSection(uint8_t id)
 {
 	uint16_t result;
 	uint16_t start = getSaveBlockOffset();
-
-	for (uint8_t i = 0; i < NumOfSections; i++)
-	{
-		uint8_t currentId = getByte(start + i * SectionSize + 0x0FF4);
-		if (currentId == id)
-		{
-			result = start + i * SectionSize;
-		}
-	}
-	return result;
-};
-
-uint16_t Save::getSection(uint8_t id, uint8_t block)
-{
-	uint16_t result;
-	uint16_t start = getSaveBlockOffset(block % 2);
 
 	for (uint8_t i = 0; i < NumOfSections; i++)
 	{
@@ -175,12 +154,9 @@ uint32_t Save::getPlayerMoney()
 uint32_t Save::setPlayerMoney(uint32_t amount)
 {
 	uint32_t amountXOR = amount ^ getPlayerSecret();
-	uint16_t locationA = getSection(1, 0) + 0x0490;
-	uint16_t locationB = getSection(1, 1) + 0x0490;
+	uint16_t location = getSection(1) + 0x0490;
 
-	setBytes(locationA, amountXOR, 4);
-	setBytes(locationB, amountXOR, 4);
-
+	setBytes(location, amountXOR, 4);
 
 	return getPlayerMoney();
 };
@@ -202,11 +178,9 @@ uint32_t Save::setBytes(uint16_t offset, uint32_t newBytes, uint16_t size)
 
 uint16_t Save::setPlayerGender(uint16_t newGender)
 {
-	uint16_t offsetA = getSection(0, 0) + 0x0008;
-	uint16_t offsetB = getSection(0, 1) + 0x0008;
+	uint16_t offset = getSection(0) + 0x0008;
 	uint32_t gender = newGender % 2; // 0 or 1
-	setByte(offsetA, gender);
-	setByte(offsetB, gender);
+	setByte(offset, gender);
 	return getPlayerGender();
 };
 
