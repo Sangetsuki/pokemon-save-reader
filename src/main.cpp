@@ -1,5 +1,3 @@
-#include "GameSaveBlock.h"
-#include "Sections.h"
 #include "Save.h"
 #include <iostream>
 
@@ -13,9 +11,7 @@ int main(int argc, char* argv[])
 
 	Save save(argv[1]);
 
-	Section* ti = save.SaveBlock->getSection(0);
-
-	std::cout << ti->id << std::endl;
+	std::cout << save.GameSaveBlock->trainerData->id << std::endl;
 
 	return 0;
 }
