@@ -9,12 +9,11 @@ public:
 	Save(const char* path);
 	~Save();
 
-	uint16_t getSaveBlockOffset(); // current block
-
-	void saveFile();
-
 	GameSaveBlock* SaveBlock;
+
+	// void saveFile();
 private:
+	u16 getSaveBlockOffset();
 	char bytes[TotalSize];
 	std::ofstream file;
 };

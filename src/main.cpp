@@ -1,4 +1,6 @@
 #include "Save.h"
+#include "GameSaveBlock.h"
+#include "defines.h"
 #include <iostream>
 
 int main(int argc, char* argv[])
@@ -11,7 +13,7 @@ int main(int argc, char* argv[])
 
 	Save save(argv[1]);
 
-	std::cout << save.GameSaveBlock->trainerData->id << std::endl;
+	std::cout << save.SaveBlock->trainerData->data->name << std::endl;
 
 	return 0;
 }

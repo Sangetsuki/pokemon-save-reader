@@ -1,6 +1,6 @@
 #include "GameSaveBlock.h"
-#include "Sections.h"
 #include "Save.h"
+#include "Binary.h"
 
 Save::Save(const char* path)
 {
@@ -11,27 +11,29 @@ Save::Save(const char* path)
 
 	char gameblockdata[GameSaveASize];
 
-	std::copy(data + getSaveBlockOffset(), data + getSaveBlockOffset() + GameSaveASize, gameblockdata)
+	std::copy(bytes + getSaveBlockOffset(), bytes + getSaveBlockOffset() + GameSaveASize, gameblockdata);
 
 	SaveBlock = new GameSaveBlock(gameblockdata);
 }; 
 
 Save::~Save()
 {
-	saveFile();
+	// saveFile();
 	file.close();
 	delete SaveBlock;
 };
 
-uint16_t Save::getSaveBlockOffset()
+u16 Save::getSaveBlockOffset()
 {
-	u32 SaveBlockAIndex = getBytes<u32>(0x0FFC);
-	u32 SaveBlockBIndex = getByte(GameSaveASize + 0x0FFC);
+	u32 SaveBlockAIndex = getBytes<u32>(bytes, 0x0FFC);
+	u32 SaveBlockBIndex = getBytes<u32>(bytes, GameSaveASize + 0x0FFC);
 
 	return SaveBlockAIndex > SaveBlockBIndex ? 0x0000 : GameSaveASize;
 };
 
+/*
+spoilers
 void Save::saveFile()
 {
 	file.write(bytes, TotalSize);
-};
+};*/
