@@ -30,5 +30,5 @@ T setBytes(char* data, u16 offset, T newBytes)
 	{
 		data[offset + i] = (newBytes >> (8 * i)) & 0xFF;
 	}
-	return getBytes<T>(data, offset, size);
+	return getBytes<T>(data, offset);
 };
