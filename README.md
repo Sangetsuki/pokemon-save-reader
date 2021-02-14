@@ -1,22 +1,8 @@
-Um leitor de save de pokémon da 3 geração. Consegue ler algumas informações do jogador, porém não consegue salvar pois não gera os checksums para validar o save.
+Um leitor de save de pokémon da 3 geração. Antes fazia algumas leituras simples da informação do jogador, mas agora não está nem funcionando.
 
-A maneira que ele funciona não é uma das mais eficazes, ele tem o save num array de bytes e trabalha com a
-localização no save, sendo bem dificil de interagir, planejo separar tudo em classes (uma para cada seção).
+Ele funcionava lendo os bytes individualmente num array, estou colocando tudo em classes.
 
-Para compilar:
+vou fazer um makefile pra ele depois.
 
-```
-g++ main.cpp Save.cpp
-```
-
-não coloquei makefile ainda
-
-Para funcionar:
-```
-./a.out (caminho para o save, sem os ())
-```
-
-Se for compilar num windows lembre-se de compilar com um .exe eu acho
-
-
-A informação foi pega da [bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Save_data_structure_in_Generation_III) e a ideia foi [desse repositorio](https://github.com/huderlem/gomons)
+A informação foi pega da [bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Save_data_structure_in_Generation_III).
+A ideia foi [desse repositorio](https://github.com/huderlem/gomons).
