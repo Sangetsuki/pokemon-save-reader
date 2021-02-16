@@ -1,7 +1,10 @@
 #include "defines.h"
+#include <vector>
 
+class Section;
 class TrainerInfo;
 class TrainerInventory;
+class Save;
 
 class GameSaveBlock
 {
@@ -9,12 +12,11 @@ public:
 	GameSaveBlock(char* data);
 	~GameSaveBlock();
 
-	TrainerInfo* trainerData; // somehow i'll have to put this in an array
-	TrainerInventory* inv;
- 
-	/*template <typename T>
-	Section<T>* getSection(); // id % 14, T for dynamic section. NOT GOOD :(
+	void update();
 
+	TrainerInfo* trainer;
+	TrainerInventory* inv;
 private:
-	BaseSection* sections[NumOfSections];*/
+	friend class Save;
+	char bytes[GameSaveASize];
 };

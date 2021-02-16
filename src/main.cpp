@@ -14,14 +14,25 @@ int main(int argc, char* argv[])
 
 	Save save(argv[1]);
 
-	u32 secret = save.SaveBlock->trainerData->secret;
-	u32 moneyXOR = save.SaveBlock->inv->money;
+	char* name = save.SaveBlock->trainer->name;
+	u32 secret = save.SaveBlock->trainer->secret;
+	u32 moneyXOR = save.SaveBlock->inv->getMoney();
 
 	u32 money = secret ^ moneyXOR;
 
-	std::cout << "secret: " << secret << std::endl;
-	std::cout << "moneyXOR: " << moneyXOR << std::endl;
-	std::cout << "money: " << money << std::endl;
+	std::cout << "Ola " << name << std::endl;
+	std::cout << "Voce tem " << money << "$" << std::endl;
+	std::cout << "Vou te dar 500$ para te ajudar!" << std::endl;
+
+	money += 500;
+
+	save.SaveBlock->inv->setMoney(secret ^ money);
+	moneyXOR = save.SaveBlock->inv->getMoney();
+
+	std::cout << "agora vc tem " << (secret ^ moneyXOR) << "$. Yey" << std::endl;
+
+	std::cout << "sua checksum desatualizada é " << save.SaveBlock->inv->checksum << std::endl;
+	std::cout << "ela foi atualizada para " << save.SaveBlock->inv->updateChecksum() << std::endl;
 
 	return 0;
 }

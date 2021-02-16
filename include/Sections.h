@@ -4,26 +4,14 @@
 class Section
 {
 public:
-	u16 id;
-	u16 checksum;
-	u32 index;
+	Section(char* data);
+	u32 checksum;
 
-	Section(char* data)
-	{
-		id = getBytes<u16>(data, 0x0FF4);
-		checksum = getBytes<u16>(data, 0x0FF6);
-		index = getBytes<u32>(data, 0x0FFC);
-	};
-
-	~Section()
-	{
-	}
-
-	u16 updateChecksum()
-	{
-		// DO CHECKSUM CALCULATION
-		return checksum;
-	}
+	u32 updateChecksum(); // auto calculates valid checksum and sets it to checksum
+protected:
+	friend class GameSaveBlock;
+	u32 id, index; // you really don't want to change them manually 
+	char bytes[SectionSize]; // needed to save file
 };
 
 class TrainerInfo : public Section
@@ -31,6 +19,7 @@ class TrainerInfo : public Section
 public:
 	TrainerInfo(char* data);
 
+	// these need to be getters and setters (so changes can also change internal bytes)
 	char name[8];
 	u8 gender;
 	u16 TID;
@@ -44,6 +33,8 @@ class TrainerInventory : public Section
 public:
 	TrainerInventory(char* data);
 
-	u32 partySize;
-	u32 money;
+	u32 getpartySize();
+
+	u32 getMoney(); // must be XORed with secret to yield true value
+	u32 setMoney(u32 money);
 };

@@ -7,7 +7,7 @@ Save::Save(const char* path)
 	std::ifstream data(path, std::ios::in | std::ios::binary);
 	data.read(bytes, TotalSize);
 	data.close();
-	//file.open(path, std::ios::out | std::ios::binary);
+	file.open(path, std::ios::out | std::ios::binary);
 
 	char gameblockdata[GameSaveASize];
 
@@ -18,7 +18,7 @@ Save::Save(const char* path)
 
 Save::~Save()
 {
-	// saveFile();
+	saveFile();
 	file.close();
 	delete SaveBlock;
 }
@@ -31,9 +31,9 @@ u16 Save::getSaveBlockOffset()
 	return SaveBlockAIndex > SaveBlockBIndex ? 0x0000 : GameSaveASize;
 }
 
-/*
-spoilers
 void Save::saveFile()
 {
+	SaveBlock->update();
+	std::copy(SaveBlock->bytes, SaveBlock->bytes + GameSaveASize, bytes + getSaveBlockOffset());
 	file.write(bytes, TotalSize);
-};*/
+}

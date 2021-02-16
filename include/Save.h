@@ -11,7 +11,7 @@ public:
 
 	GameSaveBlock* SaveBlock;
 
-	// void saveFile();
+	void saveFile();
 private:
 	u16 getSaveBlockOffset();
 	char bytes[TotalSize];
