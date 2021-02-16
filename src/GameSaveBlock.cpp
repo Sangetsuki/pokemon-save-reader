@@ -1,24 +1,28 @@
 #include "GameSaveBlock.h"
-#include "Binary.h"
+#include "Sections.h"
 
 #include <iostream>
 
 GameSaveBlock::GameSaveBlock(char* data)
 {
 	char sectionData[SectionSize];
-	u8 id, checksum;
-	u32 index;
+
 	for (u8 i = 0; i < NumOfSections; i++)
 	{
 		std::copy(data + i * SectionSize, data + (i + 1) * SectionSize, sectionData);
 
-		id = getByte(sectionData, 0x0FF4);
-		checksum = getBytes<u16>(sectionData, 0x0FF6);
-		index = getBytes<u32>(sectionData, 0x0FFC);
+		u16 id = getBytes<u16>(sectionData, 0x0FF4);
 
-		if (id == 0 && !trainerData)
+		switch (id)
 		{
-			trainerData = new Section<TrainerInfo>(sectionData, id, checksum, index);
+			case 0:
+				trainerData = new TrainerInfo(sectionData);
+				break;
+			case 1:
+				inv = new TrainerInventory(sectionData);
+				break;
+			default:
+				break;
 		}
 	}
 }
@@ -26,4 +30,5 @@ GameSaveBlock::GameSaveBlock(char* data)
 GameSaveBlock::~GameSaveBlock()
 {
 	delete trainerData;
+	delete inv;
 }

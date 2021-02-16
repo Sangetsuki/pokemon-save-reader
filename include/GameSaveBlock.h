@@ -1,5 +1,7 @@
 #include "defines.h"
-#include "Sections.h"
+
+class TrainerInfo;
+class TrainerInventory;
 
 class GameSaveBlock
 {
@@ -7,8 +9,9 @@ public:
 	GameSaveBlock(char* data);
 	~GameSaveBlock();
 
-	Section<TrainerInfo>* trainerData; // somehow i'll have to put this in an array
-
+	TrainerInfo* trainerData; // somehow i'll have to put this in an array
+	TrainerInventory* inv;
+ 
 	/*template <typename T>
 	Section<T>* getSection(); // id % 14, T for dynamic section. NOT GOOD :(
 

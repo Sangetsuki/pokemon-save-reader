@@ -1,25 +1,22 @@
 #include "defines.h"
+#include "Binary.h"
 
-template <typename T> // Section<TrainerInfo> = section 0 (player data)
 class Section
 {
 public:
-	T* data;
 	u16 id;
 	u16 checksum;
 	u32 index;
 
-	Section(char* data, u16 id, u16 checksum, u32 index)
+	Section(char* data)
 	{
-		this->id = id;
-		this->checksum = checksum;
-		this->index = index;
-		this->data = new T(data);
+		id = getBytes<u16>(data, 0x0FF4);
+		checksum = getBytes<u16>(data, 0x0FF6);
+		index = getBytes<u32>(data, 0x0FFC);
 	};
 
 	~Section()
 	{
-		delete data;
 	}
 
 	u16 updateChecksum()
@@ -29,7 +26,7 @@ public:
 	}
 };
 
-class TrainerInfo
+class TrainerInfo : public Section
 {
 public:
 	TrainerInfo(char* data);
@@ -40,6 +37,13 @@ public:
 	u16 SID;
 	// u32 game;
 	u32 secret;
-private:
-	char PokeToAscii(u8 target);
+};
+
+class TrainerInventory : public Section
+{
+public:
+	TrainerInventory(char* data);
+
+	u32 partySize;
+	u32 money;
 };
