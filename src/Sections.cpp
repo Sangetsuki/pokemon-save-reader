@@ -1,4 +1,5 @@
 #include "Sections.h"
+#include "Pokemon.h"
 #include <iostream>
 #include "util.h"
 
@@ -39,7 +40,23 @@ TrainerInfo::TrainerInfo(char* data) : Section(data)
 
 TrainerInventory::TrainerInventory(char* data) : Section(data)
 {
+	char pokemon[0x0100];
+	std::cout << (u32)getpartySize() << std::endl;
+	for (u8 i = 0; i <= getpartySize(); i++)
+	{
+		u16 offset = 0x0238 + 0x100 * i;
+		std::copy(data + offset, data + offset + 0x100, pokemon);
+	
+		party[i] = new Pokemon(pokemon);
+	}
+}
 
+TrainerInventory::~TrainerInventory()
+{
+	for (u8 i = 0; i <= getpartySize(); i++)
+	{
+		delete party[i];
+	}
 }
 
 u32 TrainerInventory::getpartySize()

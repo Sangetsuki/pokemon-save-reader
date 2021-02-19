@@ -1,6 +1,8 @@
 #include "defines.h"
 #include "Binary.h"
 
+class Pokemon;
+
 class Section
 {
 public:
@@ -32,9 +34,12 @@ class TrainerInventory : public Section
 {
 public:
 	TrainerInventory(char* data);
+	~TrainerInventory();
 
 	u32 getpartySize();
 
 	u32 getMoney(); // must be XORed with secret to yield true value
 	u32 setMoney(u32 money);
+
+	Pokemon* party[6];
 };
