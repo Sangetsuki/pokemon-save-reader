@@ -40,11 +40,10 @@ TrainerInfo::TrainerInfo(char* data) : Section(data)
 
 TrainerInventory::TrainerInventory(char* data) : Section(data)
 {
-	char pokemon[0x0100];
-	std::cout << (u32)getpartySize() << std::endl;
+	char pokemon[0x100];
 	for (u8 i = 0; i <= getpartySize(); i++)
 	{
-		u16 offset = 0x0238 + 0x100 * i;
+		u16 offset = 0x0238 + 100 * i;
 		std::copy(data + offset, data + offset + 0x100, pokemon);
 	
 		party[i] = new Pokemon(pokemon);

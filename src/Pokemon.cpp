@@ -2,6 +2,7 @@
 #include "Binary.h"
 #include "util.h"
 #include <iostream>
+#include <bitset>
 
 void decrypt(char* data, u32 PID, u32 TID)
 {
@@ -34,7 +35,7 @@ u16 getGrowthOffset(u32 PID)
 		default:
 			offset = 3;
 	}
-	return 12 * (offset + 1);
+	return 32 + 12 * offset;
 }
 
 u16 getAttacksOffset(u32 PID)
@@ -55,7 +56,7 @@ u16 getAttacksOffset(u32 PID)
 		default:
 			offset = 3;
 	}
-	return 12 * (offset + 1);
+	return 32 + 12 * offset;
 }
 
 u16 getConditionOffset(u32 PID)
@@ -76,7 +77,7 @@ u16 getConditionOffset(u32 PID)
 		default:
 			offset = 3;
 	}
-	return 12 * (offset + 1);
+	return 32 + 12 * offset;
 }
 
 u16 getMiscOffset(u32 PID)
@@ -97,7 +98,7 @@ u16 getMiscOffset(u32 PID)
 		default:
 			offset = 3;
 	}
-	return 12 * (offset + 1);
+	return 32 + 12 * offset;
 }
 
 PokemonMisc::PokemonMisc(char* _data)
@@ -110,33 +111,77 @@ PokemonMisc::PokemonMisc(char* _data)
 	std::copy(_data + offset, _data + offset + 12, data);
 	decrypt(data, PID, TID);
 
-	pokerus = getByte(data, offset);
-	met = getByte(data, offset + 1);
-	origin = getBytes<u16>(data, offset + 2);
-	u32 iea = getBytes<u32>(data, offset + 4);
+	pokerus = getByte(data, 0);
+	met = getByte(data, 1);
+	origin = getBytes<u16>(data, 2);
+	u32 iea = getBytes<u32>(data, 4);
 
 	for (u8 i = 0; i < 6; i++)
 	{
 		IV[i] = iea & (0x1F << (i * 5));
 	}
 
-	egg = (iea >> 30) == 1;
+	egg = (iea >> 30) & 0x01;
 	ability = iea >> 31;
+
+	std::cout << std::bitset<32>(iea) << std::endl;
 }
 
-PokemonGrowth::PokemonGrowth(char* data)
+PokemonGrowth::PokemonGrowth(char* _data)
 {
+	u32 PID = getBytes<u32>(_data, 00);
+	u32 TID = getBytes<u32>(_data, 04);
+	u16 offset = getGrowthOffset(PID);
 
+	char data[12];
+	std::copy(_data + offset, _data + offset + 12, data);
+	decrypt(data, PID, TID);
+
+	species = getBytes<u16>(data, 0);
+	item = getBytes<u16>(data, 2);
+	xp = getBytes<u32>(data, 4);
+	PP = getByte(data, 8);
+	friendship = getByte(data, 9);
 }
 
-PokemonAttacks::PokemonAttacks(char* data)
+PokemonAttacks::PokemonAttacks(char* _data)
 {
+	u32 PID = getBytes<u32>(_data, 00);
+	u32 TID = getBytes<u32>(_data, 04);
+	u16 offset = getAttacksOffset(PID);
 
+	char data[12];
+	std::copy(_data + offset, _data + offset + 12, data);
+	decrypt(data, PID, TID);
+
+	for (u8 i = 0; i < 4; i++)
+	{
+		moves[i] = getBytes<u16>(data, 2 * i);
+		pp[i] = getByte(data, 8 + i);
+	}
 }
 
-PokemonCondition::PokemonCondition(char* data)
+PokemonCondition::PokemonCondition(char* _data)
 {
+	u32 PID = getBytes<u32>(_data, 00);
+	u32 TID = getBytes<u32>(_data, 04);
+	u16 offset = getConditionOffset(PID);
+
+	char data[12];
+	std::copy(_data + offset, _data + offset + 12, data);
+	decrypt(data, PID, TID);
+
+	for (u8 i = 0; i < 6; i++)
+	{
+		EV[i] = getByte(data, i);
+	}
+
+	for (u8 i = 0; i < 5; i++)
+	{
+		contest[i] = getByte(data, i + 6);
+	}
 	
+	Feel = getByte(data, 11);
 }
 
 Pokemon::Pokemon(char* data) : growth(data), attacks(data), condition(data), misc(data)
@@ -150,7 +195,10 @@ Pokemon::Pokemon(char* data) : growth(data), attacks(data), condition(data), mis
 		Nickname[i] = PokeToAscii(getByte(data, 8 + i));
 	}
 
-	//char Tname[8];
+	for (u8 i = 0; i < 7; i++)
+	{
+		Tname[i] = PokeToAscii(getByte(data, 20 + i));
+	}
 
 	Language = getBytes<u16>(data, 18);
 	markings = getByte(data, 27);

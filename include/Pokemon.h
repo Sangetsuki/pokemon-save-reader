@@ -1,6 +1,6 @@
 #include "defines.h"
 
-enum statsEnum
+enum stats
 {
 	HP = 0,
 	Attack,
@@ -9,6 +9,16 @@ enum statsEnum
 	SpAttack,
 	SpDefense
 };
+
+enum contestStats
+{
+	Cool = 0,
+	Beauty,
+	Cute,
+	Smart,
+	Tough
+};
+
 
 class PokemonGrowth
 {
@@ -37,11 +47,7 @@ public:
 	PokemonCondition(char* data);
 
 	u8 EV[6];
-	u8 Cool;
-	u8 Beauty;
-	u8 Cute;
-	u8 Smart;
-	u8 Tough;
+	u8 contest[5];
 	u8 Feel;
 };
 

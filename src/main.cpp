@@ -15,12 +15,18 @@ int main(int argc, char* argv[])
 
 	Save save(argv[1]);
 
-	for (u8 i = 0; i <= save.SaveBlock->inv->getpartySize(); i++)
+	for (u8 i = 0; i < save.SaveBlock->inv->getpartySize(); i++)
 	{
 		Pokemon* pkmn = save.SaveBlock->inv->party[i];
-		std::cout << "POkemon " << i + 1 << " se chama " << pkmn->Nickname << std::endl;
-		std::cout << "ELe esta no nivel " << (u32)pkmn->Level << std::endl;
-		std::cout << "Seu hp maximo é " << (u32)pkmn->stats[HP] << std::endl;
+		std::cout << "POkemon " << i + 1 << " se chama: " << pkmn->Nickname << std::endl;
+		std::cout << "Capturado por: " << pkmn->Tname << std::endl;		
+		std::cout << "chave: " << (pkmn->PID ^ pkmn->TID) << std::endl;
+		std::cout << "Especie numero: " << (u32)pkmn->growth.species << std::endl;
+		std::cout << "nivel: " << (u32)pkmn->Level << std::endl;
+		std::cout << "hp maximo: " << (u32)pkmn->stats[HP] << std::endl;
+		std::cout << "amizade: " << (u32)pkmn->growth.friendship << "/256" << std::endl;
+		std::cout << (u32)pkmn->misc.ability<< std::endl;
+		std::cout << (pkmn->misc.egg ? 1 : 0) << std::endl;
 		std::cout << std::endl;
 	}
 
